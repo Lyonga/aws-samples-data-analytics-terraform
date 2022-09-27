@@ -58,6 +58,16 @@ resource "aws_s3_bucket" "click_logger_emr_studio_bucket" {
   }
 }
 
+
+resource "aws_vpc_endpoint" "stepfunction_ecs_s3_vpc_endpoint" {
+  vpc_id       = "${aws_vpc.stepfunction_ecs_vpc.id}"
+  service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
+
+  tags = {
+    Environment = "${var.app_prefix}-s3-vpc-endpoint"
+  }
+}
+
 output "S3FirehoseDeliveryBucket" {
   value = aws_s3_bucket.click_logger_firehose_delivery_s3_bucket
 }
